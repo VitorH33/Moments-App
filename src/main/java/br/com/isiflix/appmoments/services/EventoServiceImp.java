@@ -1,6 +1,7 @@
 package br.com.isiflix.appmoments.services;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import br.com.isiflix.appmoments.dto.EventoDTO;
 import br.com.isiflix.appmoments.model.Cliente;
 import br.com.isiflix.appmoments.model.Evento;
 import br.com.isiflix.appmoments.repo.EventoRepo;
+import br.com.isiflix.appmoments.util.EventValues;
 
 @Service
 public class EventoServiceImp implements IEventoService{
@@ -44,7 +46,12 @@ public class EventoServiceImp implements IEventoService{
 	@Override
 	public EventoDTO recuperarPeloUuid(String uuid) {
 		Evento evt = repo.findByUuid(uuid);
-		if (evt != null) {
+		if (evt != null && evt.getStatusFinanceiro() == EventValues.APROVADO) {
+			if (evt.getDataHoraFim().isBefore(LocalDateTime.now())) {
+				evt.setStatusFinanceiro(EventValues.EXPIRADO);
+				repo.save(evt);
+				return null;
+			}
 			return new EventoDTO(evt.getUuid(), evt.getTitulo(), evt.getFrase(), evt.getDataHoraInicio(), evt.getDataHoraFim(), evt.getLinkMoldura());
 		}
 		return null;
