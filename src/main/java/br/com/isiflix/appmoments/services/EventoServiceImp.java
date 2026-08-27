@@ -26,6 +26,7 @@ public class EventoServiceImp implements IEventoService{
 	@Override
 	public Evento criarEvento(Evento novo) {
 		novo.setUuid(UUID.randomUUID().toString());
+		novo.setStatusFinanceiro(EventValues.CRIADO);
 		novo.setDataHoraFim(novo.getDataHoraInicio().plusHours(4));
 		
 		Evento res = repo.save(novo);

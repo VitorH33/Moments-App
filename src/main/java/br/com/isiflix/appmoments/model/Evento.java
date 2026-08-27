@@ -35,7 +35,7 @@ public class Evento {
 	@Column(name = "frase_evento", length = 100, nullable = false)
 	private String frase;
 	
-	@Column(name = "status_financeiro")
+	@Column(name = "status_financeiro", nullable = false)
 	private Integer statusFinanceiro;
 	
 	@Column(name = "comprovante_transacao", columnDefinition = "TEXT")
