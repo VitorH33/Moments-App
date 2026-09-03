@@ -1,6 +1,7 @@
 package br.com.isiflix.appmoments.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.isiflix.appmoments.model.Cliente;
@@ -20,6 +21,9 @@ public class ClienteServiceImpl implements IClienteService {
 			throw new RuntimeException("Cliente ja existe");
 			
 		}
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		String novaSenha = encoder.encode(novo.getSenha());
+		novo.setSenha(novaSenha);
 		return repo.save(novo);
 	}
 
