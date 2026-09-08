@@ -26,12 +26,13 @@ public class EventoController {
 	private IEventoService service;
 	
 	@PostMapping("/eventos")
-	public ResponseEntity<Evento> cadastrarNovo(@RequestBody Evento novo) {
-		Evento res = service.criarEvento(novo);
+	public ResponseEntity<Evento> cadastrarNovo(@RequestBody Evento novo, @RequestHeader("Authorization") String token){
+		Evento res = service.criarEvento(novo, token);
 		if (res != null) {
 			return ResponseEntity.status(201).body(res);
 		}
 		return ResponseEntity.badRequest().build();
+	
 	}
 	
 	@GetMapping("/eventos/{uuid}")
@@ -59,6 +60,11 @@ public class EventoController {
 			return ResponseEntity.ok(service.recuperarPeloCliente(id));
 		}
 		return ResponseEntity.status(403).build();
+	}
+	
+	@GetMapping("/molduras")
+	public List<String> recuperarMolduras(){
+		return service.recuperarMolduras();
 	}
 	
 }
